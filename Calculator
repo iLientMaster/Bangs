@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string>
 using namespace std;
-
+# ROT MOJ EBYTE
 // Funkcijos
 double add(double a, double b) {
     return a + b; // Teisinga įgyvendinimas
