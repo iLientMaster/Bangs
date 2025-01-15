@@ -1,25 +1,25 @@
-// calculator.cpp
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <algorithm> 
 using namespace std;
 
-// Funkcijos
+
 double add(double a, double b) {
-    return a + b; // Teisinga įgyvendinimas
+    return a + b;
 }
 
 double subtract(double a, double b) {
-    return a - b; // Teisinga įgyvendinimas
+    return a - b;
 }
 
 double multiply(double a, double b) {
-    return a * b; // Teisinga įgyvendinimas
+    return a * b;
 }
 
 double divide(double a, double b) {
     if (b == 0) {
-        return -1; // Klaida: reikėtų mesti išimtį
+        throw invalid_argument("Division by zero.");
     }
     return a / b;
 }
@@ -34,11 +34,11 @@ double calculate(const string& operation, double a, double b) {
     } else if (operation == "divide") {
         return divide(a, b);
     } else {
-        return -1; // Klaida: reikėtų mesti išimtį
+        throw invalid_argument("Invalid operation: " + operation);
     }
 }
 
-// Pagrindinė programa (su tyčinėmis klaidomis)
+
 int main() {
     cout << "Welcome to the Calculator App!" << endl;
     cout << "Available operations: add, subtract, multiply, divide" << endl;
@@ -46,19 +46,27 @@ int main() {
     string operation;
     double a, b;
 
-    cout << "Enter first number: "; // Nėra įvesties validacijos
-    cin >> a;
-    cout << "Enter second number: "; // Nėra įvesties validacijos
-    cin >> b;
-    cout << "Enter operation: ";
-    cin >> operation;
+    try {
+        cout << "Enter first number: ";
+        if (!(cin >> a)) {
+            throw invalid_argument("Invalid input for the first number.");
+        }
 
-    double result = calculate(operation, a, b); // Nėra tinkamos klaidų validacijos
+        cout << "Enter second number: ";
+        if (!(cin >> b)) {
+            throw invalid_argument("Invalid input for the second number.");
+        }
 
-    if (result == -1) {
-        cout << "Error: Invalid operation or division by zero." << endl;
-    } else {
+        cin.ignore(); 
+        cout << "Enter operation: ";
+        getline(cin, operation);
+        
+        operation.erase(remove(operation.begin(), operation.end(), ' '), operation.end());
+
+        double result = calculate(operation, a, b);
         cout << "The result is: " << result << endl;
+    } catch (const exception& e) {
+        cout << "Error: " << e.what() << endl;
     }
 
     return 0;
